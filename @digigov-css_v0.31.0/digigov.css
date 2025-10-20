@@ -2131,6 +2131,7 @@ body {
   --tw-text-opacity: 1;
   color: rgba(var(--color-header-content-rgb), var(--tw-text-opacity));
   text-decoration: none;
+  align-content: center;
 }
 .govgr-header-title:hover {
   text-decoration: none;
