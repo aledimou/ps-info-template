@@ -208,6 +208,15 @@ $("document").ready(function () {
     $("#nextQuestion").show();
     if (currentQuestion > 0) {
       $("#backButton").show();
+    }
+    
+    // Update progress bar
+    if (totalQuestions > 0) {
+      var progress = ((questionId + 1) / totalQuestions) * 100;
+      $("#progress-bar").css("width", progress + "%");
+      $("#progress-percentage").text(Math.round(progress) + "%");
+      var currentLanguageText = currentLanguage === "greek" ? "Ερώτηση" : "Question";
+      $("#progress-text").text(currentLanguageText + " " + (questionId + 1) + " " + (currentLanguage === "greek" ? "από" : "of") + " " + totalQuestions);
     } 
 
     currentLanguage === "greek"
@@ -295,25 +304,161 @@ $("document").ready(function () {
       }
     }
 
-    $(".question-container").html(questionElement);
+    // Add fade out animation before replacing content
+    $(".question-container").fadeOut(200, function() {
+      $(this).html(questionElement).fadeIn(300, function() {
+        // Apply checked styling if any radio is checked
+        $('.govgr-radios__input:checked').closest('.govgr-radios__label').addClass('checked');
+      });
+    });
+  }
+
+  // Function to restart the questionnaire
+  function restartQuestionnaire() {
+    // Reset all variables
+    currentQuestion = 0;
+    userAnswers = {};
+    
+    // Clear session storage
+    for (var i = 0; i < totalQuestions; i++) {
+      sessionStorage.removeItem("answer_" + i);
+    }
+    
+    // Clear evidences list if it exists
+    $("#evidences").html("");
+    
+    // Reset progress bar
+    $("#progress-bar").css("width", "0%");
+    
+    // Show intro and language button again
+    var disclaimerText = currentLanguage === "greek" 
+      ? "Η υπηρεσία αυτή αποτελεί ερευνητικό πρωτότυπο του Πανεπιστημίου Μακεδονίας και δεν αποτελεί επίσημη υπηρεσία του <a href=\"https://www.gov.gr\" target=\"_blank\">gov.gr</a>. Παρέχεται αποκλειστικά για δοκιμαστικούς σκοπούς χωρίς καμία ευθύνη ή εγγύηση. Για επίσημες πληροφορίες, επισκεφθείτε το <a href=\"https://www.gov.gr\" target=\"_blank\">www.gov.gr</a>."
+      : "This service is a research prototype by the University of Macedonia and is not an official service of <a href=\"https://www.gov.gr\" target=\"_blank\">gov.gr</a>. It is provided exclusively for testing purposes without any liability or guarantee. For official information, visit <a href=\"https://www.gov.gr\" target=\"_blank\">www.gov.gr</a>.";
+    
+    var disclaimerLinkText = currentLanguage === "greek" ? "Αποποίηση Ευθύνης" : "Disclaimer";
+    
+    $("#intro").html(`
+      <p class="govgr-body" id="intro-box" tabindex="4">
+        <strong data-component="subTitle1" class="language-component">${languageContent[currentLanguage].subTitle1}</strong><br /><br />
+        <span data-component="subTitle2" class="language-component">${languageContent[currentLanguage].subTitle2}</span><br /><br />
+        <em data-component="subTitle3" class="language-component">${languageContent[currentLanguage].subTitle3}</em><br /><br />
+        <strong>
+          <a href="#" id="disclaimerLink" style="cursor: pointer;">${disclaimerLinkText}</a>:
+        </strong> ${disclaimerText}<br />
+      </p>
+      <button class="govgr-btn govgr-btn-primary govgr-btn-cta" id="startBtn" tabindex="5">
+        <span class="language-component" data-component="startBtn">${languageContent[currentLanguage].startBtn}</span>
+        <svg viewBox="0 0 24 24" class="govgr-arrow--right" focusable="false" aria-hidden="true">
+          <path d="M8.5,2L6.1,4.3l7.6,7.7l-7.6,7.6L8.5,22l10-10L8.5,2z" />
+        </svg>
+      </button>
+    `);
+    
+    // Update language components in intro
+    updateContent();
+    
+    // Show intro and language button
+    $("#intro").fadeIn(400);
+    $("#languageBtn").fadeIn(400);
+    
+    // Hide questions section and progress bar
+    $("#questions-btns").fadeOut(400);
+    $("#progress-container").fadeOut(400);
+    $("#backButton").hide();
+    
+    // Scroll to top smoothly
+    $("html, body").animate({
+      scrollTop: 0
+    }, 600);
+    
+    // Re-attach start button click handler
+    $("#startBtn").off('click').on('click', function () {
+      $("#intro").fadeOut(400, function() {
+        $(this).html("");
+      });
+      $("#languageBtn").fadeOut(300);
+      $("#progress-container").fadeIn(500);
+      $("#questions-btns").hide().fadeIn(500);
+      
+      // Scroll to questions smoothly
+      setTimeout(function() {
+        $("html, body").animate({
+          scrollTop: $("#questions-btns").offset().top - 100
+        }, 600);
+      }, 400);
+    });
+    
+    // Re-attach disclaimer link handler
+    const disclaimerLink = document.getElementById("disclaimerLink");
+    if (disclaimerLink) {
+      const disclaimerModalElement = document.getElementById('disclaimerModal');
+      const disclaimerModal = new bootstrap.Modal(disclaimerModalElement);
+      
+      disclaimerLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        disclaimerModal.show();
+      });
+    }
   }
 
   function skipToEnd(message) {
-    const errorEnd = document.createElement("h5");
+    const errorEnd = document.createElement("div");
     const error =
       currentLanguage === "greek"
-        ? "Λυπούμαστε αλλά δεν δικαιούστε το δελτίο μετακίνησης ΑΜΕΑ!"
-        : "We are sorry but you are not entitled to the transportation card for the disabled!";
-    errorEnd.className = "govgr-error-summary";
-    errorEnd.textContent = error + " " + message;
-    $(".question-container").html(errorEnd);
+        ? "Λυπούμαστε αλλά δεν δικαιούστε το Πιστοποιητικό Οικογενειακής Κατάστασης!"
+        : "We are sorry but you are not entitled to the Family Status Certificate!";
+    
+    const errorMessage = document.createElement("h5");
+    errorMessage.className = "govgr-error-summary";
+    errorMessage.textContent = error + " " + message;
+    
+    const thankYouMessage = document.createElement("div");
+    thankYouMessage.className = "thank-you-message";
+    thankYouMessage.innerHTML = "<p>" + languageContent[currentLanguage].thankYou + "</p>";
+    
+    // Create restart button
+    const restartButton = document.createElement("button");
+    restartButton.className = "govgr-btn govgr-btn-primary restart-btn";
+    restartButton.innerHTML = `
+      <span>${languageContent[currentLanguage].restartButton}</span>
+      <svg viewBox="0 0 24 24" class="govgr-arrow--right" focusable="false" aria-hidden="true">
+        <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
+      </svg>
+    `;
+    restartButton.onclick = function(e) {
+      e.preventDefault();
+      restartQuestionnaire();
+    };
+    
+    errorEnd.appendChild(errorMessage);
+    errorEnd.appendChild(thankYouMessage);
+    errorEnd.appendChild(restartButton);
+    
+    $(".question-container").fadeOut(200, function() {
+      $(this).html(errorEnd).fadeIn(400);
+      
+      // Scroll to message smoothly
+      $("html, body").animate({
+        scrollTop: $(".question-container").offset().top - 100
+      }, 600);
+    });
     hideFormBtns();
   }
 
   $("#startBtn").click(function () {
-    $("#intro").html("");
-    $("#languageBtn").hide();
-    $("#questions-btns").show();
+    $("#intro").fadeOut(400, function() {
+      $(this).html("");
+    });
+    $("#languageBtn").fadeOut(300);
+    $("#progress-container").fadeIn(500);
+    $("#questions-btns").hide().fadeIn(500);
+    
+    // Scroll to questions smoothly
+    setTimeout(function() {
+      $("html, body").animate({
+        scrollTop: $("#questions-btns").offset().top - 100
+      }, 600);
+    }, 400);
   });
 
   function retrieveAnswers() {
@@ -403,20 +548,51 @@ $("document").ready(function () {
         : "You are eligible!";
     resultWrapper.innerHTML = `<h1 class='answer'>${titleText}</h1>`;
     resultWrapper.setAttribute("id", "resultWrapper");
-    $(".question-container").html(resultWrapper);
     
-    const evidenceListElement = document.createElement("ol");
-    evidenceListElement.setAttribute("id", "evidences");
-    currentLanguage === "greek"
-      ? $(".question-container").append(
-          "<br /><br /><h5 class='answer'>Τα δικαιολογητικά που πρέπει να προσκομίσετε για να λάβετε το δελτίο μετακίνησης είναι τα εξής:</h5><br />"
-        )
-      : $(".question-container").append(
-          "<br /><br /><h5 class='answer'>The documents you need to provide in order to receive your transportation card are the following:</h5><br />"
-        );
-    $(".question-container").append(evidenceListElement);
+    $(".question-container").fadeOut(300, function() {
+      $(this).html(resultWrapper);
+      
+      const evidenceListElement = document.createElement("ol");
+      evidenceListElement.setAttribute("id", "evidences");
+      currentLanguage === "greek"
+        ? $(this).append(
+            "<br /><br /><h5 class='answer'>Τα δικαιολογητικά που πρέπει να προσκομίσετε για να λάβετε το Πιστοποιητικό Οικογενειακής Κατάστασης είναι τα εξής:</h5><br />"
+          )
+        : $(this).append(
+            "<br /><br /><h5 class='answer'>The documents you need to provide in order to receive your Family Status Certificate are the following:</h5><br />"
+          );
+      $(this).append(evidenceListElement);
+      $(this).fadeIn(500);
+      
+      retrieveAnswers();
+      
+      // Add thank you message after all results are displayed
+      // Wait a bit longer to ensure retrieveAnswers() has completed
+      setTimeout(function() {
+        const thankYouMessage = document.createElement("div");
+        thankYouMessage.className = "thank-you-message";
+        thankYouMessage.innerHTML = "<p>" + languageContent[currentLanguage].thankYou + "</p>";
+        
+        $(".question-container").append(thankYouMessage);
+        
+        // Smooth fade in for thank you message
+        $(thankYouMessage).hide().fadeIn(600);
+        
+        // Scroll to thank you message smoothly after a short delay
+        setTimeout(function() {
+          $("html, body").animate({
+            scrollTop: $(thankYouMessage).offset().top - 100
+          }, 800);
+        }, 400);
+      }, 1000);
+      
+      // Scroll to results smoothly
+      $("html, body").animate({
+        scrollTop: $("#resultWrapper").offset().top - 100
+      }, 800);
+    });
+    
     $("#faqContainer").load("faq.html");
-    retrieveAnswers();
     hideFormBtns();
   }
 
@@ -473,10 +649,15 @@ $("document").ready(function () {
       // Retrieve the answer for the previous question from userAnswers
       var answer = userAnswers[currentQuestion];
       if (answer) {
-        $('input[name="question-option"][value="' + answer + '"]').prop(
-          "checked",
-          true
-        );
+        // Find the radio button by index (answer is 1-based index)
+        var radioIndex = answer - 1;
+        setTimeout(function() {
+          var radioInput = $('input[name="question-option"]').eq(radioIndex);
+          radioInput.prop("checked", true);
+          // Update styling
+          $('.govgr-radios__label').removeClass('checked');
+          radioInput.closest('.govgr-radios__label').addClass('checked');
+        }, 350); // Wait for fadeIn animation to complete
       }
     }
   });
@@ -504,5 +685,24 @@ $("document").ready(function () {
         loadQuestion(currentQuestion, true);
       });
     });
+  });
+
+  // Add event listeners for radio button styling
+  $(document).on('change', '.govgr-radios__input', function() {
+    // Remove checked class from all labels in the same question
+    $(this).closest('.question-container').find('.govgr-radios__label').removeClass('checked');
+    // Add checked class to the parent label of checked input
+    $(this).closest('.govgr-radios__label').addClass('checked');
+  });
+
+  // Also handle click on labels for better UX
+  $(document).on('click', '.govgr-radios__label', function() {
+    var radioInput = $(this).find('.govgr-radios__input');
+    if (!radioInput.is(':checked')) {
+      // Remove checked class from all labels in the same question
+      $(this).closest('.question-container').find('.govgr-radios__label').removeClass('checked');
+      // Add checked class to clicked label
+      $(this).addClass('checked');
+    }
   });
 });

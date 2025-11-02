@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title class="language-component" data-component="mainTitle">Transportation Card</title>
+    <title class="language-component" data-component="mainTitle">Family Status Certificate</title>
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.css" rel="stylesheet" crossorigin="anonymous" />
 
@@ -51,15 +51,12 @@
         </div>
     </header>
 
-    <div class="mask" id="mask-up"></div>
-    <div class="mask" id="mask-bottom"></div>
-
     <!--  MAIN CONTAINER -->
     <div class="govgr-width-container" id="content">
         <div class="govgr-main-wrapper">
             <div class="govgr-grid-column-two-thirds">
                 <h1 class="govgr-heading-xl language-component" data-component="infoTitle" tabindex="3">
-                    Πληροφορίες για την χορήγηση Δελτίων Μετακίνησης ΑΜΕΑ για το 2023
+                    Πληροφορίες για την χορήγηση Πιστοποιητικού Οικογενειακής Κατάστασης
                 </h1>
             </div>
         </div>
@@ -68,19 +65,19 @@
             <p class="govgr-body" id="intro-box" tabindex="4">
                 <strong data-component="subTitle1" class="language-component">Αυτό το ερωτηματολόγιο μπορεί να σας
                     βοηθήσει
-                    να βρείτε αν δικαιούστε να λάβετε το Δελτίο Μετακίνησης ΑΜΕΑ.</strong><br /><br />
+                    να βρείτε αν δικαιούστε να λάβετε το Πιστοποιητικό Οικογενειακής Κατάστασης.</strong><br /><br />
                 <span data-component="subTitle2" class="language-component">H συμπλήρωση του ερωτηματολογίου δεν απαιτεί
                     παραπάνω από 10 λεπτά.</span><br /><br />
                 <em data-component="subTitle3" class="language-component">Δεν θα αποθηκεύσουμε ούτε θα μοιραστούμε τις
                     απαντήσεις σας.</em><br /><br />
                 <strong>
                     <a href="#" id="disclaimerLink"
-                        style="text-decoration: underline; cursor: pointer; color: #003375;">Αποποίηση Ευθύνης</a>:
+                        style="cursor: pointer;">Αποποίηση Ευθύνης</a>:
                 </strong>Η υπηρεσία αυτή αποτελεί ερευνητικό πρωτότυπο του Πανεπιστημίου
                 Μακεδονίας και δεν αποτελεί
-                επίσημη υπηρεσία του <a href="www.gov.gr">gov.gr</a>. Παρέχεται αποκλειστικά για δοκιμαστικούς σκοπούς
+                επίσημη υπηρεσία του <a href="https://www.gov.gr" target="_blank">gov.gr</a>. Παρέχεται αποκλειστικά για δοκιμαστικούς σκοπούς
                 χωρίς καμία ευθύνη ή εγγύηση.
-                Για επίσημες πληροφορίες, επισκεφθείτε το <a href="www.gov.gr">www.gov.gr</a>.<br />
+                Για επίσημες πληροφορίες, επισκεφθείτε το <a href="https://www.gov.gr" target="_blank">www.gov.gr</a>.<br />
             </p>
             <button class="govgr-btn govgr-btn-primary govgr-btn-cta" id="startBtn" tabindex="5">
                 <span class="language-component" data-component="startBtn">Ας ξεκινήσουμε</span>
@@ -95,6 +92,15 @@
             </svg>
             <span class="language-component" data-component="backButton">Πίσω</span>
         </a>
+        <div id="progress-container" style="display: none;">
+            <div>
+                <span id="progress-text"></span>
+                <span id="progress-percentage"></span>
+            </div>
+            <div>
+                <div id="progress-bar"></div>
+            </div>
+        </div>
         <div id="questions-btns">
             <div class="question-container" tabindex="7">
                 <!-- here we load questions with JQuery -->
@@ -109,8 +115,9 @@
     </div>
 
     <!-- FAQ -->
-    <br /><br />
-    <div id="faqContainer" class="govgr-accordion govgr-width-container faqContainer" style="display: none;">
+    <div style="margin-top: 60px; margin-bottom: 40px;">
+        <div id="faqContainer" class="govgr-accordion govgr-width-container faqContainer" style="display: none;">
+        </div>
     </div>
 
     <div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel"
@@ -156,16 +163,11 @@
                     <div class="govgr-footer__content">
                         <p class="govgr-footer__licence-description" id="footerData">
                             <span tabindex="19" class="language-component" data-component="footerText">Υλοποίηση για την
-                                εκπόνηση πτυχιακής εργασίας από τις φοιτήτριες της Εφαρμοσμένης Πληροφορικής:</span>
-                            <a tabindex="20" href="https://github.com/ElisavetAmpatzidou" target="_blank"
+                                εκπόνηση εργασίας:</span>
+                            
+                            <a tabindex="21" href="https://github.com/aledimou" target="_blank"
                                 rel="noreferrer noopener" class="govgr-link"><span class="language-component"
-                                    data-component="student1">Αμπατζίδου Ελισάβετ</span>
-                                <span class="govgr-visually-hidden">(ανοίγει σε καινούρια καρτέλα)</span></a>
-                            <span class="language-component" data-component="and">και</span>
-                            <a tabindex="21" href="https://github.com/evitadasy" target="_blank"
-                                rel="noreferrer noopener" class="govgr-link"><span class="language-component"
-                                    data-component="student2">Δασύρα Ευμορφία Ελπίδα</span>
-                                <span class="govgr-visually-hidden">(ανοίγει σε καινούρια καρτέλα)</span></a>
+                                    data-component="student2">Δημου Αλεξιος</span>
                         </p>
                     </div>
                 </div>

@@ -1,73 +1,850 @@
-html, body
-{
-  overflow-x: hidden;
+/* ============================================
+   MODERN UI ENHANCEMENTS WITH ANIMATIONS
+   ============================================ */
+
+/* Color Palette Variables */
+:root {
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary-color: #14b8a6;
+  --accent-color: #f59e0b;
+  --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --card-background: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* header */
+html, body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  transition: background-color 0.3s ease;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ============================================
+   HEADER ENHANCEMENTS
+   ============================================ */
 .header-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
+  animation: fadeInDown 0.6s ease-out;
 }
 
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-/*language button*/
-#languageBtn{
+.govgr-header {
+  background: var(--background-gradient);
+  box-shadow: var(--shadow-md);
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.govgr-header-title {
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   LANGUAGE BUTTON
+   ============================================ */
+#languageBtn {
   display: flex;
   justify-content: center;
   align-items: center;
   grid-gap: 7px;
   gap: 7px;
   padding: 10px;
-  background-color: white;
-  border-radius: 4px;
-  color: #003375;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  color: var(--primary-color);
   flex-wrap: nowrap;
   width: 90px;
   height: 50px;
   font-size: 18px;
+  font-weight: 600;
   position: absolute;
   right: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+#languageBtn:hover {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+#languageBtn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: var(--shadow-sm);
+}
+
+#languageBtn svg path {
+  transition: fill 0.3s ease;
+}
+
+#languageBtn:hover svg path {
+  fill: white;
+}
+
+/* ============================================
+   INTRO BOX
+   ============================================ */
+#intro {
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#intro-box {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInScale 0.6s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+#intro-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+#intro-box strong {
+  color: var(--primary-dark);
+  font-size: 1.1em;
+}
+
+#intro-box a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+#intro-box a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+#intro-box a:hover {
+  color: var(--primary-dark);
+}
+
+#intro-box a:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.govgr-btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.govgr-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.govgr-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+}
+
+.govgr-btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.govgr-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
+.govgr-btn-primary svg {
+  transition: transform 0.3s ease;
+}
+
+.govgr-btn-primary:hover svg {
+  transform: translateX(4px);
+}
+
+#startBtn {
+  margin-top: 20px;
+  animation: bounceIn 0.8s ease-out 0.4s both;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.govgr-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: 2px solid transparent;
+  animation: fadeInLeft 0.5s ease-out;
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.govgr-back-link:hover {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  transform: translateX(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.govgr-back-link svg {
+  transition: transform 0.3s ease;
+}
+
+.govgr-back-link:hover svg {
+  transform: translateX(-4px);
+}
+
+/* ============================================
+   QUESTION CONTAINER
+   ============================================ */
+.question-container {
+  animation: slideInRight 0.5s ease-out;
+  min-height: 200px;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.govgr-fieldset {
+  background: var(--card-background);
+  padding: 30px;
+  border-radius: 16px;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.govgr-fieldset__legend {
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+/* ============================================
+   RADIO BUTTONS
+   ============================================ */
+.govgr-radios__item {
+  margin-bottom: 16px;
+  animation: fadeInUp 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.govgr-radios__item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.govgr-radios__item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.govgr-radios__item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.govgr-radios__item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.govgr-radios__label {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.govgr-radios__label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.govgr-radios__label:hover {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  transform: translateX(8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.govgr-radios__label:hover::before {
+  left: 100%;
+}
+
+.govgr-radios__input {
+  margin-right: 12px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+  flex-shrink: 0;
+  order: -1;
+}
+
+/* When radio is checked, style its parent label */
+.govgr-radios__input:checked {
+  accent-color: var(--primary-color);
+}
+
+/* Style the label when it contains a checked input (CSS :has() selector) */
+.govgr-radios__item:has(.govgr-radios__input:checked) .govgr-radios__label,
+.govgr-radios__label.checked {
+  border-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  box-shadow: var(--shadow-md);
+  transform: translateX(8px) scale(1.02);
+}
+
+.govgr-radios__label.checked:hover {
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+}
+
+/* ============================================
+   EVIDENCES LIST
+   ============================================ */
 #evidences {
   padding-left: 0.5rem;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 #evidences ol {
   list-style: none;
   counter-reset: item;
 }
+
 #evidences li {
   counter-increment: item;
-  margin-bottom: 5px;
+  margin-bottom: 12px;
   font-size: 1.1em;
+  padding: 12px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  border-radius: 10px;
+  border-left: 4px solid var(--primary-color);
+  animation: slideInLeft 0.4s ease-out;
+  animation-fill-mode: both;
+  transition: all 0.3s ease;
 }
+
+#evidences li:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+#evidences li:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+#evidences li:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+#evidences li:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+#evidences li:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+#evidences li:hover {
+  transform: translateX(8px);
+  box-shadow: var(--shadow-sm);
+  border-left-width: 6px;
+}
+
 #evidences li:before {
-  margin-right: 10px;
+  margin-right: 12px;
   content: counter(item);
-  background: #0065b3;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   color: white;
-  width: 1.5rem;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
   text-align: center;
   display: inline-block;
+  border-radius: 50%;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
-#intro-box {
-  background-color: #F0F0F0; 
-  padding: 20px; 
-  border-radius: 10px; 
+/* ============================================
+   RESULTS
+   ============================================ */
+.answer {
+  color: var(--primary-dark);
+  animation: fadeInScale 0.6s ease-out;
+}
+
+#resultWrapper {
+  animation: fadeInScale 0.6s ease-out;
+}
+
+/* ============================================
+   THANK YOU MESSAGE
+   ============================================ */
+.thank-you-message {
+  margin-top: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+  border: 2px solid var(--secondary-color);
+  border-radius: 16px;
   text-align: center;
+  box-shadow: var(--shadow-md);
+  animation: fadeInUp 0.6s ease-out;
 }
 
+.thank-you-message p {
+  font-size: 1.3em;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin: 0;
+  line-height: 1.6;
+}
 
-@media only screen and (max-width: 893px) {
+.thank-you-message::before {
+  content: '✓';
+  display: block;
+  font-size: 3em;
+  color: var(--success-color);
+  margin-bottom: 15px;
+  animation: scaleIn 0.5s ease-out 0.3s both;
+}
 
-  #languageBtn{
-    position: relative;
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
   }
-  .header-row, .govgr-header__content{
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   RESTART BUTTON
+   ============================================ */
+.restart-btn {
+  margin-top: 30px;
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.restart-btn:hover {
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #0d9488 100%);
+}
+
+.restart-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  animation: rotate 2s linear infinite;
+}
+
+.restart-btn:hover svg {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   ERROR MESSAGES
+   ============================================ */
+.govgr-error-message {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  border-left: 4px solid var(--error-color);
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  animation: shake 0.5s ease-out;
+  color: var(--error-color);
+  font-weight: 600;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+.govgr-error-summary {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  border: 2px solid var(--error-color);
+  padding: 24px;
+  border-radius: 12px;
+  color: var(--error-color);
+  font-weight: 600;
+  animation: fadeInScale 0.6s ease-out;
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   FAQ ACCORDION
+   ============================================ */
+.faqContainer {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.govgr-accordion__section {
+  margin-bottom: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.govgr-accordion__section:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.govgr-accordion__section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.govgr-accordion__section:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.govgr-accordion__section:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.govgr-accordion__section-summary {
+  padding: 20px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  transition: all 0.3s ease;
+}
+
+.govgr-accordion__section:hover .govgr-accordion__section-summary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+}
+
+.govgr-accordion__section-content {
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+.modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: var(--shadow-xl);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+  border: none;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.btn-close:hover {
+  transform: rotate(90deg);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.govgr-footer {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  margin-top: 60px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.govgr-footer a {
+  color: var(--primary-light);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.govgr-footer a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+#progress-container {
+  animation: fadeInUp 0.5s ease-out;
+  margin-bottom: 30px;
+}
+
+#progress-text, #progress-percentage {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+#progress-container > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+#progress-container > div:last-child {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  width: 0%;
+  transition: width 0.5s ease;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+#questions-btns {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media only screen and (max-width: 893px) {
+  #languageBtn {
+    position: relative;
+    margin: 10px auto;
+  }
+
+  .header-row,
+  .govgr-header__content {
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -75,29 +852,52 @@ html, body
 
   .govgr-header__content {
     position: relative;
-    left: 50% ;
+    left: 50%;
     transform: translateX(-50%);
   }
 }
 
 @media only screen and (max-width: 786px) {
-  
-  .header-row,.govgr-header__content{
+  .header-row,
+  .govgr-header__content {
     align-items: center;
     justify-content: center;
   }
-  .serviceTitle{
+
+  .serviceTitle {
     text-align: center;
+  }
+
+  #intro-box {
+    padding: 20px;
+  }
+
+  .govgr-fieldset {
+    padding: 20px;
+  }
+
+  .govgr-btn-primary {
+    padding: 12px 24px;
+    font-size: 14px;
   }
 }
 
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
 
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border-radius: 5px;
+}
 
-
-
-
-
-
-
-
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-color) 100%);
+}
